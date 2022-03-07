@@ -1,5 +1,5 @@
 <template>
-  <div class="task-list" :style="{ height: isOpen ? '385px' : '500px' }">
+  <div class="task-list" :style="{ height: isOpen ? '350px' : '500px' }">
     <div class="tasks" v-for="(data, i) in todoData" :key="i">
       <i
         v-if="data.checked"
@@ -42,7 +42,7 @@ export default {
       this.$emit("checkednum", this.checkednum);
     },
     deleteList(d) {
-      if (confirm(d.content + "를(을) 삭제하시겠습니까?")) {
+      if (confirm(d.content + "을(를) 삭제하시겠습니까?")) {
         let newLists = this.todoData.filter((e) => e.id !== d.id);
         for (let i in newLists) {
           newLists[i].id = i;
@@ -57,7 +57,7 @@ export default {
 <style>
 .task-list {
   overflow-y: scroll;
-  height: 385px;
+  height: 350px;
 }
 .tasks {
   display: flex;

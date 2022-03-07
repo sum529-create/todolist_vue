@@ -9,12 +9,23 @@
       <task-list @checkednum="checkednum" :isOpen="isOpen" @modify="modify" />
     </div>
     <div class="tasks-input" :style="{ display: isOpen ? 'block' : 'none' }">
-      <form action="" class="text-area">
+      <form
+        action=""
+        class="text-area"
+        :style="{ background: isModify ? 'grey' : 'lightgrey' }"
+      >
+        <p :style="{ color: isModify ? '#FFF' : '#000' }">
+          {{
+            this.isModify
+              ? "✔ 등록된 일정을 수정합니다."
+              : "✔ 새로운 일정을 추가합니다."
+          }}
+        </p>
         <input
           type="text"
           placeholder="오늘 할일을 입력하여 enter하세요"
           @keydown.enter.prevent="chooseMode"
-          v-model="todayData"
+          v-model="newTodoItem"
         />
       </form>
     </div>
@@ -36,7 +47,7 @@ export default {
       isOpen: false,
       today: "",
       week: "",
-      todayData: "",
+      newTodoItem: "",
       isModify: false,
       sendData: {
         id: "",
@@ -60,45 +71,64 @@ export default {
       this.week = moment().locale("ko").format("dddd");
     },
     inputArea() {
+      this.isModify = false;
+      this.newTodoItem = "";
       this.isOpen = !this.isOpen;
     },
     checkednum(d) {
       this.checked = d;
     },
-    addList(e) {
+    clearInput() {
+      this.newTodoItem = "";
+    },
+    addList() {
+      this.sendData = {};
       //eslint-disable-next-line
-      var regExp = /[ \{\}\[\]\/?.,;:|\)*~`!^\-_+┼<>@\#$%&\'\"\\\(\=]/gi;
-      if (e.target.value === "") {
+      var regExp = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+┼<>@\#$%&\'\"\\\(\=]/gi;
+      if (this.newTodoItem === "") {
         alert("오늘 할일을 입력하여 주세요");
-      } else if (regExp.test(e.target.value)) {
+        this.isOpen = true;
+        return false;
+      } else if (regExp.test(this.newTodoItem)) {
         alert("특수문자가 포함되어 있습니다.");
+        this.isOpen = true;
+        return false;
       } else {
-        this.sendData.id = 0;
-        this.sendData.content = e.target.value;
         for (let i in this.todoData) {
           this.todoData[i].id += 1;
-          if (this.todoData[i].content == e.target.value) {
+          if (this.todoData[i].content == this.newTodoItem) {
             alert("이미 입력하신 항목이 있습니다.");
             return false;
           }
         }
+        this.sendData.id = 0;
+        this.sendData.content = this.newTodoItem;
         this.todoData.unshift(this.sendData);
-        e.target.value = "";
+        this.$store.commit("changeLists", this.todoData);
+        this.clearInput();
       }
+      this.isOpen = false;
     },
     modify(d, m) {
-      this.isModify = m;
-      this.isOpen = true;
-      this.todayData = d.content;
-      this.myData = d;
+      if (confirm(d.content + "을(를) 수정하시겠습니까?")) {
+        this.isModify = m;
+        this.isOpen = true;
+        this.newTodoItem = d.content;
+        this.myData = d;
+      }
     },
     nowModify(e) {
+      this.sendData = {};
       //eslint-disable-next-line
       var regExp = /[ \{\}\[\]\/?.,;:|\)*~`!^\-_+┼<>@\#$%&\'\"\\\(\=]/gi;
       if (e.target.value === "") {
         alert("오늘 할일을 입력하여 주세요");
+        this.isOpen = true;
+        return false;
       } else if (regExp.test(e.target.value)) {
         alert("특수문자가 포함되어 있습니다.");
+        this.isOpen = true;
+        return false;
       } else {
         this.sendData.id = this.myData.id;
         this.sendData.content = e.target.value;
@@ -109,11 +139,11 @@ export default {
           }
         }
         let newLists = this.todoData.filter((e) => e.id !== this.myData.id);
-
         newLists.splice(this.myData.id, 0, this.sendData);
         this.$store.commit("changeLists", newLists);
         e.target.value = "";
       }
+      this.isOpen = false;
     },
     chooseMode(e) {
       if (this.isModify) {
@@ -179,10 +209,11 @@ body {
   width: 100%;
 }
 .tasks-input > .text-area {
-  padding: 40px 20px 100px 20px;
+  padding: 20px 20px 100px 20px;
   border-bottom-left-radius: 16px;
   border-bottom-right-radius: 16px;
   background: lightgrey;
+  font-weight: bold;
 }
 .tasks-input > .text-area input {
   width: 100%;
