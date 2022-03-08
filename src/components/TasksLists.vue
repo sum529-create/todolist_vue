@@ -20,13 +20,8 @@
       >
         {{ data.content }}
       </div>
-      <div
-        class="tasks-delete"
-        :style="{ display: data.checked === true ? 'block' : 'none' }"
-        @click="deleteList(data)"
-      >
-        X
-      </div>
+      <!-- :style="{ display: data.checked === true ? 'block' : 'none' }" -->
+      <div class="tasks-delete" @click="deleteList(data)">X</div>
     </div>
   </div>
 </template>

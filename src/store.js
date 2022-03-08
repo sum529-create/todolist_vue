@@ -12,11 +12,6 @@ const store = createStore({
       state.todoData = payload;
     },
   },
-  getters: {
-    test(state) {
-      return state.todoData;
-    },
-  },
 });
 
 export default store;
