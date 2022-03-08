@@ -10,7 +10,7 @@
     </div>
     <div class="tasks-input" :style="{ display: isOpen ? 'block' : 'none' }">
       <form
-        action=""
+        action="#"
         class="text-area"
         :style="{ background: isModify ? 'grey' : 'lightgrey' }"
       >
@@ -21,10 +21,16 @@
               : "✔ 새로운 일정을 추가합니다."
           }}
         </p>
+        <p
+          class="infoText"
+          :style="{ color: isModify ? '#F7E600' : '#E95145' }"
+        >
+          ※ 특수문자는 사용이 불가합니다.
+        </p>
         <input
           type="text"
           placeholder="오늘 할일을 입력하여 enter하세요"
-          @keydown.enter.prevent="chooseMode"
+          @keydown.enter.prevent="addTodoList"
           v-model="newTodoItem"
         />
       </form>
@@ -81,7 +87,7 @@ export default {
     clearInput() {
       this.newTodoItem = "";
     },
-    addList() {
+    addTodoList() {
       this.sendData = {};
       //eslint-disable-next-line
       var regExp = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+┼<>@\#$%&\'\"\\\(\=]/gi;
@@ -95,17 +101,25 @@ export default {
         return false;
       } else {
         for (let i in this.todoData) {
-          this.todoData[i].id += 1;
+          if (!this.isModify) this.todoData[i].id += 1;
           if (this.todoData[i].content == this.newTodoItem) {
             alert("이미 입력하신 항목이 있습니다.");
             return false;
           }
         }
-        this.sendData.id = 0;
         this.sendData.content = this.newTodoItem;
-        this.todoData.unshift(this.sendData);
-        this.$store.commit("changeLists", this.todoData);
-        this.clearInput();
+        this.sendData.checked = false;
+        if (!this.isModify) {
+          this.sendData.id = 0;
+          this.todoData.unshift(this.sendData);
+          this.$store.commit("changeLists", this.todoData);
+          this.clearInput();
+        } else {
+          this.sendData.id = this.myData.id;
+          let newLists = this.todoData.filter((e) => e.id !== this.myData.id);
+          newLists.splice(this.myData.id, 0, this.sendData);
+          this.$store.commit("changeLists", newLists);
+        }
       }
       this.isOpen = false;
     },
@@ -117,41 +131,69 @@ export default {
         this.myData = d;
       }
     },
-    nowModify(e) {
-      this.sendData = {};
-      //eslint-disable-next-line
-      var regExp = /[ \{\}\[\]\/?.,;:|\)*~`!^\-_+┼<>@\#$%&\'\"\\\(\=]/gi;
-      if (e.target.value === "") {
-        alert("오늘 할일을 입력하여 주세요");
-        this.isOpen = true;
-        return false;
-      } else if (regExp.test(e.target.value)) {
-        alert("특수문자가 포함되어 있습니다.");
-        this.isOpen = true;
-        return false;
-      } else {
-        this.sendData.id = this.myData.id;
-        this.sendData.content = e.target.value;
-        for (let i in this.todoData) {
-          if (this.todoData[i].content == e.target.value) {
-            alert("이미 입력하신 항목이 있습니다.");
-            return false;
-          }
-        }
-        let newLists = this.todoData.filter((e) => e.id !== this.myData.id);
-        newLists.splice(this.myData.id, 0, this.sendData);
-        this.$store.commit("changeLists", newLists);
-        e.target.value = "";
-      }
-      this.isOpen = false;
-    },
-    chooseMode(e) {
-      if (this.isModify) {
-        this.nowModify(e);
-      } else {
-        this.addList(e);
-      }
-    },
+    // addTodoList() {
+    //   this.sendData = {};
+    //   //eslint-disable-next-line
+    //   var regExp = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+┼<>@\#$%&\'\"\\\(\=]/gi;
+    //   if (this.newTodoItem === "") {
+    //     alert("오늘 할일을 입력하여 주세요");
+    //     this.isOpen = true;
+    //     return false;
+    //   } else if (regExp.test(this.newTodoItem)) {
+    //     alert("특수문자가 포함되어 있습니다.");
+    //     this.isOpen = true;
+    //     return false;
+    //   } else {
+    //     for (let i in this.todoData) {
+    //       this.todoData[i].id += 1;
+    //       if (this.todoData[i].content == this.newTodoItem) {
+    //         alert("이미 입력하신 항목이 있습니다.");
+    //         return false;
+    //       }
+    //     }
+    //     this.sendData.id = 0;
+    //     this.sendData.content = this.newTodoItem;
+    //     this.todoData.unshift(this.sendData);
+    //     this.$store.commit("changeLists", this.todoData);
+    //     this.clearInput();
+    //   }
+    //   this.isOpen = false;
+    //  },
+    // },
+    // nowModify() {
+    //   this.sendData = {};
+    //   //eslint-disable-next-line
+    //   var regExp = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+┼<>@\#$%&\'\"\\\(\=]/gi;
+    //   if (this.newTodoItem === "") {
+    //     alert("오늘 할일을 입력하여 주세요");
+    //     this.isOpen = true;
+    //     return false;
+    //   } else if (regExp.test(this.newTodoItem)) {
+    //     alert("특수문자가 포함되어 있습니다.");
+    //     this.isOpen = true;
+    //     return false;
+    //   } else {
+    //     this.sendData.id = this.myData.id;
+    //     this.sendData.content = this.newTodoItem;
+    //     for (let i in this.todoData) {
+    //       if (this.todoData[i].content == this.newTodoItem) {
+    //         alert("이미 입력하신 항목이 있습니다.");
+    //         return false;
+    //       }
+    //     }
+    //     let newLists = this.todoData.filter((e) => e.id !== this.myData.id);
+    //     newLists.splice(this.myData.id, 0, this.sendData);
+    //     this.$store.commit("changeLists", newLists);
+    //   }
+    //   this.isOpen = false;
+    // },
+    // chooseMode(e) {
+    //   if (this.isModify) {
+    //     this.nowModify(e);
+    //   } else {
+    //     this.addTodoList(e);
+    //   }
+    // },
   },
 };
 </script>
@@ -239,5 +281,8 @@ body {
   outline: none;
   color: #fff;
   font-size: 60px;
+}
+.infoText {
+  font-size: 12px;
 }
 </style>

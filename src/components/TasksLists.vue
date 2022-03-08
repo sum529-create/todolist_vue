@@ -1,5 +1,5 @@
 <template>
-  <div class="task-list" :style="{ height: isOpen ? '350px' : '500px' }">
+  <div class="task-list" :style="{ height: isOpen ? '325px' : '500px' }">
     <div class="tasks" v-for="(data, i) in todoData" :key="i">
       <i
         v-if="data.checked"
@@ -11,10 +11,20 @@
       <i v-else class="material-icons tasks-check" @click="checking(i)">
         radio_button_unchecked
       </i>
-      <div class="tasks-item" @click="$emit('modify', data, isModify)">
+      <div
+        class="tasks-item"
+        :class="data.checked === true ? 'tasks-done' : false"
+        @click="$emit('modify', data, isModify)"
+      >
         {{ data.content }}
       </div>
-      <div class="tasks-delete" @click="deleteList(data)">X</div>
+      <div
+        class="tasks-delete"
+        :style="{ display: data.checked === true ? 'block' : 'none' }"
+        @click="deleteList(data)"
+      >
+        X
+      </div>
     </div>
   </div>
 </template>
@@ -57,7 +67,7 @@ export default {
 <style>
 .task-list {
   overflow-y: scroll;
-  height: 350px;
+  height: 325px;
 }
 .tasks {
   display: flex;
@@ -85,5 +95,9 @@ export default {
 .tasks > .tasks-delete {
   cursor: pointer;
   padding: 0 10px;
+}
+.tasks > .tasks-done {
+  text-decoration: line-through;
+  color: #cecece;
 }
 </style>
