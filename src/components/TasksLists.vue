@@ -14,7 +14,9 @@
       <div
         class="tasks-item"
         :class="data.checked === true ? 'tasks-done' : false"
-        @click="$emit('modify', data, isModify)"
+        @click="
+          data.checked === true ? notModify() : $emit('modify', data, isModify)
+        "
       >
         {{ data.content }}
       </div>
@@ -35,7 +37,6 @@ export default {
   name: "TasksLists",
   data() {
     return {
-      checkednum: "",
       isModify: true,
     };
   },
@@ -46,10 +47,11 @@ export default {
     ...mapState(["todoData"]),
   },
   methods: {
+    notModify() {
+      alert("이미 완료된 일정은 수정할 수 없습니다.");
+    },
     checking(i) {
       this.todoData[i].checked = !this.todoData[i].checked;
-      this.checkednum = this.todoData.filter((e) => e.checked == true);
-      this.$emit("checkednum", this.checkednum);
     },
     deleteList(d) {
       if (confirm(d.content + "을(를) 삭제하시겠습니까?")) {
@@ -74,6 +76,9 @@ export default {
   align-items: center;
   padding-top: 12px;
   padding-bottom: 12px;
+}
+.tasks:hover > .tasks-delete {
+  display: block;
 }
 .tasks > .tasks-check {
   width: 32px;
