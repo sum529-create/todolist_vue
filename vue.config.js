@@ -1,4 +1,4 @@
 module.exports = {
-  //   outputDir: "./docs",
-  publicPath: "/todolist_vue",
+  outputDir: "./docs",
+  publicPath: process.env.NODE_ENV === "production" ? "/todolist_vue/" : "/",
 };
