@@ -1,15 +1,7 @@
 <template>
   <div class="todolist-template">
-    <div class="todolist-header" @click="getTime()">
-      <h1>{{ this.today }} 일정</h1>
-      <div class="day">오늘은 {{ this.week }}</div>
-      <div class="tasks-left">
-        오늘 할 일 {{ totalCheckedNum.length }}개 남았음
-      </div>
-    </div>
-    <div class="todolist-body">
-      <task-list :isOpen="isOpen" @modify="modify" />
-    </div>
+    <todo-list-header />
+    <task-list :isOpen="isOpen" @modify="modify" />
     <div class="tasks-input" :style="{ display: isOpen ? 'block' : 'none' }">
       <form
         action="#"
@@ -44,16 +36,16 @@
 <script>
 import { mapState } from "vuex";
 import taskList from "./components/TasksLists.vue";
+import TodoListHeader from "./components/TodoListHeader.vue";
 export default {
   name: "App",
   components: {
     taskList,
+    TodoListHeader,
   },
   data() {
     return {
       isOpen: false,
-      today: "",
-      week: "",
       newTodoItem: "",
       isModify: false,
       sendData: {
@@ -66,19 +58,8 @@ export default {
   },
   computed: {
     ...mapState(["todoData"]),
-    totalCheckedNum() {
-      return this.todoData.filter((e) => e.checked == false);
-    },
-  },
-  created() {
-    this.getTime();
   },
   methods: {
-    getTime() {
-      const moment = require("moment");
-      this.today = moment().format("YYYY년 MM월 DD일");
-      this.week = moment().locale("ko").format("dddd");
-    },
     inputArea() {
       this.isModify = false;
       this.newTodoItem = "";
@@ -222,30 +203,6 @@ body {
   display: flex;
   flex-direction: column;
 }
-.todolist-header {
-  padding: 24px 32px;
-  border-bottom: 1px solid #eee;
-}
-.todolist-header > h1 {
-  color: #000000;
-  margin: 0;
-}
-.todolist-header > .day {
-  color: rgb(35, 32, 36);
-  margin-top: 8px;
-  font-size: 20px;
-}
-.todolist-header > .tasks-left {
-  margin-top: 22px;
-}
-.todolist-body {
-  flex: 1;
-  padding-top: 20px;
-  padding-left: 32px;
-  padding-right: 15px;
-  padding-bottom: 48px;
-  overflow-y: auto;
-}
 .tasks-input {
   position: absolute;
   left: 0;
@@ -266,6 +223,9 @@ body {
   padding: 10px 5px;
   border: 1px solid gray;
 }
+.tasks-input > .text-area > .infoText {
+  font-size: 12px;
+}
 .add-icon {
   border-radius: 50%;
   border: none;
@@ -283,8 +243,5 @@ body {
   outline: none;
   color: #fff;
   font-size: 60px;
-}
-.infoText {
-  font-size: 12px;
 }
 </style>

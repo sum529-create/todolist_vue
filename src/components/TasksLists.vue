@@ -1,27 +1,31 @@
 <template>
-  <div class="task-list" :style="{ height: isOpen ? '325px' : '500px' }">
-    <div class="tasks" v-for="(data, i) in todoData" :key="i">
-      <i
-        v-if="data.checked"
-        @click="checking(i)"
-        class="material-icons tasks-check checked"
-      >
-        check_circle_outline
-      </i>
-      <i v-else class="material-icons tasks-check" @click="checking(i)">
-        radio_button_unchecked
-      </i>
-      <div
-        class="tasks-item"
-        :class="data.checked === true ? 'tasks-done' : false"
-        @click="
-          data.checked === true ? notModify() : $emit('modify', data, isModify)
-        "
-      >
-        {{ data.content }}
+  <div class="todolist-body">
+    <div class="task-list" :style="{ height: isOpen ? '325px' : '500px' }">
+      <div class="tasks" v-for="(data, i) in todoData" :key="i">
+        <i
+          v-if="data.checked"
+          @click="checking(i)"
+          class="material-icons tasks-check checked"
+        >
+          check_circle_outline
+        </i>
+        <i v-else class="material-icons tasks-check" @click="checking(i)">
+          radio_button_unchecked
+        </i>
+        <div
+          class="tasks-item"
+          :class="data.checked === true ? 'tasks-done' : false"
+          @click="
+            data.checked === true
+              ? notModify()
+              : $emit('modify', data, isModify)
+          "
+        >
+          {{ data.content }}
+        </div>
+        <!-- :style="{ display: data.checked === true ? 'block' : 'none' }" -->
+        <div class="tasks-delete" @click="deleteList(data)">X</div>
       </div>
-      <!-- :style="{ display: data.checked === true ? 'block' : 'none' }" -->
-      <div class="tasks-delete" @click="deleteList(data)">X</div>
     </div>
   </div>
 </template>
@@ -62,6 +66,14 @@ export default {
 </script>
 
 <style>
+.todolist-body {
+  flex: 1;
+  padding-top: 20px;
+  padding-left: 32px;
+  padding-right: 15px;
+  padding-bottom: 48px;
+  overflow-y: auto;
+}
 .task-list {
   overflow-y: scroll;
   height: 325px;
