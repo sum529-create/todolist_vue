@@ -23,7 +23,6 @@
         >
           {{ data.content }}
         </div>
-        <!-- :style="{ display: data.checked === true ? 'block' : 'none' }" -->
         <div class="tasks-delete" @click="deleteList(data)">X</div>
       </div>
     </div>
@@ -66,7 +65,7 @@ export default {
 </script>
 
 <style>
-.todolist-body {
+/* .todolist-body {
   flex: 1;
   padding-top: 20px;
   padding-left: 32px;
@@ -111,5 +110,5 @@ export default {
 .tasks > .tasks-done {
   text-decoration: line-through;
   color: #cecece;
-}
+} */
 </style>

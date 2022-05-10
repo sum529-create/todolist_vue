@@ -5,6 +5,7 @@
     <div class="tasks-left">
       오늘 할 일 {{ totalCheckedNum.length }}개 남았음
     </div>
+    <p class="infoText">※ 수정 시 해당 리스트 항목을 클릭해주세요.</p>
   </div>
 </template>
 
@@ -38,7 +39,7 @@ export default {
 </script>
 
 <style>
-.todolist-header {
+/* .todolist-header {
   padding: 24px 32px;
   border-bottom: 1px solid #eee;
 }
@@ -53,5 +54,5 @@ export default {
 }
 .todolist-header > .tasks-left {
   margin-top: 22px;
-}
+} */
 </style>

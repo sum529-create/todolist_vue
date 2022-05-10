@@ -26,16 +26,73 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 export default {
   name: "TaskInput",
   data() {
-    return {};
+    return {
+      newTodoItem: "",
+      sendData: {
+        id: "",
+        content: "",
+        checked: false,
+      },
+    };
+  },
+  props: {
+    myData: Object,
+    isOpen: Boolean,
+    isModify: Boolean,
+  },
+  computed: {
+    ...mapState(["todoData"]),
+  },
+  methods: {
+    addTodoList() {
+      this.sendData = {};
+      //eslint-disable-next-line
+      var regExp = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+┼<>@\#$%&\'\"\\\(\=]/gi;
+      if (this.newTodoItem === "") {
+        alert("오늘 할일을 입력하여 주세요");
+        return false;
+      } else if (regExp.test(this.newTodoItem)) {
+        alert("특수문자가 포함되어 있습니다.");
+        return false;
+      } else {
+        for (let i in this.todoData) {
+          if (!this.isModify) this.todoData[i].id += 1;
+          if (this.todoData[i].content == this.newTodoItem) {
+            alert("이미 입력하신 항목이 있습니다.");
+            return false;
+          }
+        }
+        this.sendData.content = this.newTodoItem;
+        this.sendData.checked = false;
+        if (!this.isModify) {
+          this.sendData.id = 0;
+          this.todoData.unshift(this.sendData);
+          this.$store.commit("changeLists", this.todoData);
+          alert("추가되었습니다.");
+          this.newTodoItem = "";
+          this.$emit("close", false);
+        } else {
+          this.sendData.id = this.myData.id;
+          let newLists = this.todoData.filter((e) => e.id !== this.myData.id);
+          newLists.splice(this.myData.id, 0, this.sendData);
+          this.$store.commit("changeLists", newLists);
+          alert("수정되었습니다.");
+          this.newTodoItem = "";
+          this.$emit("close", false);
+        }
+      }
+      this.$emit("newTodoItem", this.newTodoItem);
+    },
   },
 };
 </script>
 
 <style>
-.tasks-input {
+/* .tasks-input {
   position: absolute;
   left: 0;
   bottom: 0;
@@ -57,5 +114,5 @@ export default {
 }
 .tasks-input > .text-area > .infoText {
   font-size: 12px;
-}
+} */
 </style>
