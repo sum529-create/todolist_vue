@@ -1,6 +1,6 @@
 <template>
   <div class="todolist-body">
-    <div class="task-list" :style="{ height: isOpen ? '325px' : '500px' }">
+    <div class="task-list" :style="{ height: isOpen ? '270px' : '465px' }">
       <div class="tasks" v-for="(data, i) in todoData" :key="i">
         <i
           v-if="data.checked"

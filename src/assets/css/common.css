@@ -54,6 +54,10 @@ body {
   .todolist-header > .tasks-left {
     margin-top: 22px;
   }
+  .infoText {
+    color: #0c9648;
+    font-size: 14px;
+  }
 /* tasksList */
 .todolist-body {
     flex: 1;
@@ -61,11 +65,10 @@ body {
     padding-left: 32px;
     padding-right: 15px;
     padding-bottom: 48px;
-    overflow-y: auto;
+    /* overflow-y: auto; */
   }
   .task-list {
     overflow-y: scroll;
-    height: 325px;
   }
   .tasks {
     display: flex;

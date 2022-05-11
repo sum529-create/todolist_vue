@@ -12,7 +12,7 @@
             : "✔ 새로운 일정을 추가합니다."
         }}
       </p>
-      <p class="infoText" :style="{ color: isModify ? '#F7E600' : '#E95145' }">
+      <p class="infoText" :style="{ color: isModify ? '#F7E600' : '#0c9648' }">
         ※ 특수문자는 사용이 불가합니다.
       </p>
       <input
