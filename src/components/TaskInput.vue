@@ -90,29 +90,3 @@ export default {
   },
 };
 </script>
-
-<style>
-/* .tasks-input {
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-}
-.tasks-input > .text-area {
-  padding: 20px 20px 100px 20px;
-  border-bottom-left-radius: 16px;
-  border-bottom-right-radius: 16px;
-  background: lightgrey;
-  font-weight: bold;
-}
-.tasks-input > .text-area input {
-  width: 100%;
-  box-sizing: border-box;
-  outline: none;
-  padding: 10px 5px;
-  border: 1px solid gray;
-}
-.tasks-input > .text-area > .infoText {
-  font-size: 12px;
-} */
-</style>

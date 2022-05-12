@@ -37,22 +37,3 @@ export default {
   },
 };
 </script>
-
-<style>
-/* .todolist-header {
-  padding: 24px 32px;
-  border-bottom: 1px solid #eee;
-}
-.todolist-header > h1 {
-  color: #000000;
-  margin: 0;
-}
-.todolist-header > .day {
-  color: rgb(35, 32, 36);
-  margin-top: 8px;
-  font-size: 20px;
-}
-.todolist-header > .tasks-left {
-  margin-top: 22px;
-} */
-</style>
