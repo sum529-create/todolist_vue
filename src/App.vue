@@ -57,43 +57,4 @@ export default {
 
 <style>
 @import "./assets/css/common.css";
-/* body {
-  background: rgb(44, 44, 44);
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-.todolist-template {
-  width: 512px;
-  height: 768px;
-  position: relative;
-  background: #fff;
-  border-radius: 16px;
-  box-shadow: 0 0 8px rgb(0 0 0 / 4%);
-  margin: 0 auto;
-  margin-top: 96px;
-  margin-bottom: 32px;
-  display: flex;
-  flex-direction: column;
-}
-.add-icon {
-  border-radius: 50%;
-  border: none;
-  box-shadow: 1px 2px 3px gray;
-  position: absolute;
-  background: rgb(190, 56, 56);
-  cursor: pointer;
-  width: 80px;
-  height: 80px;
-  display: block;
-  align-items: center;
-  justify-content: center;
-  left: 43%;
-  bottom: -34px;
-  outline: none;
-  color: #fff;
-  font-size: 60px;
-} */
 </style>
