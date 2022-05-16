@@ -1,6 +1,5 @@
 <template>
   <div class="todolist-template">
-    <div>업데이트 작동 테스트</div>
     <todo-list-header />
     <task-list :isOpen="isOpen" @modify="modify" />
     <task-input
